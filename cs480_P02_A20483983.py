@@ -60,6 +60,23 @@ def get_possible_next(at:str, zones: list, distances: (list, list)) -> list:
                 possible.append(zones[0][i])
     return possible
 
+def is_final_zone(at: str, zones: list) -> bool:
+    for i in range(len(zones[0])):
+        if at == zones[0][i]:
+            at_zone = int(zones[1][i])
+    if at_zone == 12:
+        return True
+    else:
+        return False
+
+def get_num_parks(at: str, parks: list) -> int:
+    for i in range(len(parks[0])):
+        if at == parks[0][i]:
+            return int(parks[1][i])
+    print('ERROR: bad arguement: get_num_parks')
+
+def backtrack(at: str, min_parks: int, zones: list, parks: list, distance_matrix: (list, list)) -> list:
+    return []
 
 if __name__ == '__main__':
     if not len(sys.argv) == 3:#checking that the number of arguements is correct
