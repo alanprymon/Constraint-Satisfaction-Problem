@@ -74,9 +74,22 @@ def get_num_parks(at: str, parks: list) -> int:
         if at == parks[0][i]:
             return int(parks[1][i])
     print('ERROR: bad arguement: get_num_parks')
+    exit(-1)
 
-def backtrack(at: str, min_parks: int, zones: list, parks: list, distance_matrix: (list, list)) -> list:
-    return []
+def backtracking_search(initial: str, min_parks: int, zones: list, parks: list, distance_matrix: (list, list)) -> list:
+    return backtrack(initial, min_parks, 0, zones, parks, distance_matrix).split(',')
+
+def backtrack(at: str, min_parks: int, current_parks: int, zones: list, parks: list, distance_matrix: (list, list)) -> str:
+    if is_final_zone(at, zones) and min_parks <= current_parks + get_num_parks(at, parks):
+        return at
+    possible = get_possible_next(at, zones, distance_matrix) #gets a list of possibles next one instead of just one like in the psuedocode
+    for value in possible: # get_possible_next is already in alphabetical order so no need to sort it
+        # value is already consistent here
+        result = backtrack(value, min_parks, current_parks + get_num_parks(at, parks), zones, parks, distance_matrix)
+        if not result.isnumeric():
+            return at + ',' + result
+    return '0'
+
 
 if __name__ == '__main__':
     if not len(sys.argv) == 3:#checking that the number of arguements is correct
@@ -96,9 +109,19 @@ if __name__ == '__main__':
     zones = get_zones()
     parks = get_parks()
     distance_matrix = get_distances_matrix()
-    print(str(get_distance('AZ', 'NV', distance_matrix)))
-    print(get_possible_next('AZ', zones, distance_matrix))
+    # print(str(get_distance('AZ', 'NV', distance_matrix)))
+    # print(get_possible_next('AZ', zones, distance_matrix))
+    # print(str(get_num_parks('CA', parks)))
 
+    path = backtracking_search(initial, int(num_of_parks), zones, parks, distance_matrix)
+    # print(path)
 
+    path_cost = 0
+    for i in range(len(path) - 1):
+        path_cost += get_distance(path[i], path[i + 1], distance_matrix)
 
-    # print("Prymon, Alan, A20483983 solution:\nInitial state: " + initial + "\nMinimum number of parks: " + num_of_parks)
+    parks_visited = 0
+    for x in path:
+        parks_visited += get_num_parks(x, parks)
+
+    print("Prymon, Alan, A20483983 solution:\nInitial state: " + initial + "\nMinimum number of parks: " + num_of_parks + '\nSolution path: ' + str(path) + '\nNumber of states on a path: ' + str(len(path)) + '\nPath cost: ' + str(path_cost) + '\nNumber of national parks visited: ' + str(parks_visited))
