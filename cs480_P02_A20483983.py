@@ -115,13 +115,13 @@ if __name__ == '__main__':
 
     path = backtracking_search(initial, int(num_of_parks), zones, parks, distance_matrix)
     # print(path)
-
-    path_cost = 0
-    for i in range(len(path) - 1):
-        path_cost += get_distance(path[i], path[i + 1], distance_matrix)
-
-    parks_visited = 0
-    for x in path:
-        parks_visited += get_num_parks(x, parks)
-
-    print("Prymon, Alan, A20483983 solution:\nInitial state: " + initial + "\nMinimum number of parks: " + num_of_parks + '\nSolution path: ' + str(path) + '\nNumber of states on a path: ' + str(len(path)) + '\nPath cost: ' + str(path_cost) + '\nNumber of national parks visited: ' + str(parks_visited))
+    if path[0].isalpha(): # not empty list aka path exists
+        path_cost = 0
+        for i in range(len(path) - 1):
+            path_cost += get_distance(path[i], path[i + 1], distance_matrix)
+        parks_visited = 0
+        for x in path:
+            parks_visited += get_num_parks(x, parks)
+        print("Prymon, Alan, A20483983 solution:\nInitial state: " + initial + "\nMinimum number of parks: " + num_of_parks + '\nSolution path: ' + str(path) + '\nNumber of states on a path: ' + str(len(path)) + '\nPath cost: ' + str(path_cost) + '\nNumber of national parks visited: ' + str(parks_visited))
+    else:
+        print("Prymon, Alan, A20483983 solution:\nInitial state: " + initial + "\nMinimum number of parks: " + num_of_parks + '\nSolution path: FAILURE: NO PATH FOUND\nNumber of states on a path: 0\nPath cost: 0\nNumber of national parks visited: 0')
